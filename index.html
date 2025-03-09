@@ -1,132 +1,489 @@
-<!DOCTYPE html>
-<html lang="en">
-
+<html lang="zh">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- SEO Meta Tags -->
-  <meta name="description" content="A mobile simulator designed to demonstrate mobile interface design.">
-  <meta name="keywords" content="mobile, simulator, mobile design, mobile app">
-  <meta name="author" content="Your Name or Company">
-  <meta http-equiv="Content-Language" content="en">
-
-  <!-- Canonical Link -->
-  <link rel="canonical" href="https://www.yourwebsite.com/pc-simulator" />
-
-  <!-- Open Graph for Social Media -->
-  <meta property="og:title" content="PC Simulator">
-  <meta property="og:description" content="A mobile simulator designed to demonstrate mobile interface design.">
-  <meta property="og:image" content="https://www.yourwebsite.com/pc-simulator-image.jpg">
-  <meta property="og:url" content="https://www.yourwebsite.com/pc-simulator">
-  <meta property="og:type" content="website">
-
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="PC Simulator">
-  <meta name="twitter:description" content="A mobile simulator designed to demonstrate mobile interface design.">
-  <meta name="twitter:image" content="https://www.yourwebsite.com/pc-simulator-image.jpg">
-  <meta name="twitter:creator" content="@yourtwitterhandle">
-
-  <!-- Favicon -->
-  <link rel="icon" href="https://www.yourwebsite.com/favicon.ico" type="image/x-icon">
-
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-XXXXX-Y"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() {
-      dataLayer.push(arguments);
-    }
-    gtag('js', new Date());
-    gtag('config', 'UA-XXXXX-Y');
-  </script>
-
-  <!-- Microsoft Clarity -->
-  <script type="text/javascript">
-    (function(c,l,a,r,i,t,y) {
-      window.clarity=window.clarity||function(){(clarity.q=clarity.q||[]).push(arguments)};
-      clarity('set', 'anonymizeIP', true);
-      i=l.createElement('script');i.async=1;i.src=r;i.type='text/javascript';
-      t=l.getElementsByTagName('script')[0];t.parentNode.insertBefore(i,t);
-    })(document,window,'script','https://www.clarity.ms/tag/XXXXXX');
-  </script>
-
-  <title>PC Simulator</title>
-
-  <style>
-    /* Global Styles */
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #f0f0f0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      text-align: center;
-    }
-
-    .mobile-container {
-      width: 360px;
-      height: 640px;
-      border: 16px solid black;
-      border-radius: 16px;
-      background-color: #fff;
-      position: relative;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .content {
-      font-size: 1.2rem;
-      color: #333;
-    }
-
-    /* Adjustments for PC */
-    @media (min-width: 768px) {
-      .mobile-container {
-        width: 600px;
-        height: 1000px;
-      }
-
-      .content {
-        font-size: 1.5rem;
-      }
-    }
-
-    @media (min-width: 1024px) {
-      .mobile-container {
-        width: 800px;
-        height: 1400px;
-      }
-
-      .content {
-        font-size: 1.8rem;
-      }
-    }
-
-    /* Additional responsiveness for larger screens */
-    @media (min-width: 1200px) {
-      body {
-        justify-content: flex-start;
-      }
-
-      .mobile-container {
-        margin-top: 50px;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>镜子练习 - 自我接纳与成长</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f5f8fa;
+        }
+        .phone-frame {
+            width: 375px;
+            height: 812px;
+            overflow: hidden;
+            border-radius: 40px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            border: 8px solid #333;
+            margin: 20px;
+            position: relative;
+        }
+        .header {
+            background-image: linear-gradient(to right, #8a2be2, #6a5acd);
+        }
+        .app-section {
+            scroll-margin-top: 80px;
+        }
+        .feature-card {
+            transition: transform 0.3s;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        .app-frames-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+    </style>
 </head>
-
 <body>
-  <div class="mobile-container">
-    <div class="content">
-      <p>Mobile Simulator Screen</p>
-      <p>PC Version: Adjusted for larger screens.</p>
-    </div>
-  </div>
-</body>
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 bg-white shadow-md">
+        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                <span class="text-2xl font-bold text-purple-700" id="appName">镜子练习</span>
+            </div>
+            <div class="hidden md:flex items-center space-x-8">
+                <a href="#features" class="text-gray-700 hover:text-purple-600" id="navFeatures">功能特点</a>
+                <a href="#benefits" class="text-gray-700 hover:text-purple-600" id="navBenefits">益处</a>
+                <a href="#app-screenshots" class="text-gray-700 hover:text-purple-600" id="navScreenshots">App 截图</a>
+                <a href="#download" class="text-gray-700 hover:text-purple-600" id="navDownload">下载</a>
+                <button id="langToggle" class="bg-purple-100 text-purple-700 px-4 py-2 rounded-full hover:bg-purple-200 transition">EN</button>
+            </div>
+            <div class="md:hidden">
+                <button class="text-gray-700 focus:outline-none">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
 
+    <!-- Hero Section -->
+    <section class="header text-white py-20">
+        <div class="container mx-auto px-6 flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 flex flex-col justify-center items-start">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4">通过镜子练习，提升自我接纳</h1>
+                <p class="text-lg md:text-xl mb-8">发现自我价值，培养内在力量，与自己建立更深层次的联系</p>
+                <a href="#app-screenshots" class="bg-white text-purple-700 font-bold py-3 px-8 rounded-full hover:bg-gray-100 transition duration-300">
+                    查看演示
+                </a>
+            </div>
+            <div class="md:w-1/2 mt-10 md:mt-0 flex justify-center">
+                <img src="https://images.unsplash.com/photo-1578598335941-2a76978525fc?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="镜子练习" class="rounded-lg shadow-2xl max-w-xs md:max-w-md">
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-16 app-section">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">核心功能</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="feature-card bg-white p-6 rounded-xl shadow-md">
+                    <div class="w-14 h-14 rounded-full bg-purple-100 flex items-center justify-center mb-4">
+                        <i class="fas fa-road text-purple-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-gray-800">练习引导</h3>
+                    <p class="text-gray-600">提供镜子练习的全面指导，从准备到自我对话，一步步引导完成练习</p>
+                </div>
+                <div class="feature-card bg-white p-6 rounded-xl shadow-md">
+                    <div class="w-14 h-14 rounded-full bg-indigo-100 flex items-center justify-center mb-4">
+                        <i class="fas fa-history text-indigo-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-gray-800">练习记录</h3>
+                    <p class="text-gray-600">记录每次练习的时间、感受和进度，帮助追踪个人成长</p>
+                </div>
+                <div class="feature-card bg-white p-6 rounded-xl shadow-md">
+                    <div class="w-14 h-14 rounded-full bg-blue-100 flex items-center justify-center mb-4">
+                        <i class="fas fa-book-open text-blue-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-gray-800">练习介绍</h3>
+                    <p class="text-gray-600">了解镜子练习的起源、好处和科学原理，帮助更好地理解练习</p>
+                </div>
+                <div class="feature-card bg-white p-6 rounded-xl shadow-md">
+                    <div class="w-14 h-14 rounded-full bg-green-100 flex items-center justify-center mb-4">
+                        <i class="fas fa-cog text-green-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-gray-800">个性化设置</h3>
+                    <p class="text-gray-600">自定义背景音乐和肯定语句，创造个性化的练习体验</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section id="benefits" class="py-16 bg-gray-50 app-section">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">镜子练习的益处</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                <div class="flex flex-col items-center text-center">
+                    <div class="w-16 h-16 rounded-full bg-yellow-100 flex items-center justify-center mb-4">
+                        <i class="fas fa-heart text-yellow-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-gray-800">提升自我接纳</h3>
+                    <p class="text-gray-600">学会接纳自己的全部，包括优点和不足，建立健康的自我形象</p>
+                </div>
+                <div class="flex flex-col items-center text-center">
+                    <div class="w-16 h-16 rounded-full bg-red-100 flex items-center justify-center mb-4">
+                        <i class="fas fa-brain text-red-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-gray-800">减轻焦虑与抑郁</h3>
+                    <p class="text-gray-600">通过自我关爱和积极对话，缓解负面情绪，改善心理健康</p>
+                </div>
+                <div class="flex flex-col items-center text-center">
+                    <div class="w-16 h-16 rounded-full bg-purple-100 flex items-center justify-center mb-4">
+                        <i class="fas fa-star text-purple-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-gray-800">增强自信心</h3>
+                    <p class="text-gray-600">培养积极的自我对话习惯，帮助建立更强的自信和自尊</p>
+                </div>
+                <div class="flex flex-col items-center text-center">
+                    <div class="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mb-4">
+                        <i class="fas fa-users text-blue-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-gray-800">改善人际关系</h3>
+                    <p class="text-gray-600">当我们更好地接纳自己，也能更好地理解和接纳他人</p>
+                </div>
+                <div class="flex flex-col items-center text-center">
+                    <div class="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mb-4">
+                        <i class="fas fa-bolt text-green-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-gray-800">提高情绪韧性</h3>
+                    <p class="text-gray-600">增强面对生活挑战的能力，更好地应对压力和逆境</p>
+                </div>
+                <div class="flex flex-col items-center text-center">
+                    <div class="w-16 h-16 rounded-full bg-indigo-100 flex items-center justify-center mb-4">
+                        <i class="fas fa-balance-scale text-indigo-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-2 text-gray-800">促进身心平衡</h3>
+                    <p class="text-gray-600">培养自我觉察能力，促进身心的和谐与平衡</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- App Screenshots Section -->
+    <section id="app-screenshots" class="py-16 app-section">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-6 text-gray-800">App 截图</h2>
+            <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">
+                体验镜子练习 App 的简洁界面和强大功能，助您踏上自我接纳之旅
+            </p>
+            
+            <div class="flex justify-center mb-8">
+                <a href="app_demo.html" class="bg-purple-600 text-white font-bold py-3 px-8 rounded-full hover:bg-purple-700 transition duration-300 flex items-center">
+                    <i class="fas fa-mobile-alt mr-2"></i> 打开完整 App 演示
+                </a>
+            
+            </div>
+            
+            <div class="app-frames-container">
+                <div class="phone-frame">
+                    <iframe src="home.html" width="100%" height="100%" frameborder="0"></iframe>
+                </div>
+                <div class="phone-frame">
+                    <iframe src="practice.html" width="100%" height="100%" frameborder="0"></iframe>
+                </div>
+                <div class="phone-frame">
+                    <iframe src="history.html" width="100%" height="100%" frameborder="0"></iframe>
+                </div>
+                <div class="phone-frame">
+                    <iframe src="profile.html" width="100%" height="100%" frameborder="0"></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scientific Validation Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-8 text-gray-800">科学依据</h2>
+            <p class="text-center text-gray-600 mb-12 max-w-3xl mx-auto">
+                镜子练习基于多项心理学研究和实践，被证明对提升自我接纳和心理健康有显著帮助
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                <div class="bg-purple-50 p-6 rounded-xl">
+                    <div class="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center mb-4">
+                        <i class="fas fa-brain text-purple-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2 text-gray-800">神经科学支持</h3>
+                    <p class="text-gray-600">研究表明，正向自我对话可以重塑大脑神经通路，增强情绪调节能力和心理韧性。</p>
+                </div>
+                <div class="bg-blue-50 p-6 rounded-xl">
+                    <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center mb-4">
+                        <i class="fas fa-microscope text-blue-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2 text-gray-800">临床实践验证</h3>
+                    <p class="text-gray-600">在临床心理治疗中，镜子练习已被用于辅助治疗低自尊、社交焦虑和抑郁症状，取得积极效果。</p>
+                </div>
+                <div class="bg-green-50 p-6 rounded-xl">
+                    <div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center mb-4">
+                        <i class="fas fa-chart-line text-green-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2 text-gray-800">长期研究成果</h3>
+                    <p class="text-gray-600">为期两年的追踪研究显示，坚持镜子练习的参与者在自我认同、情绪健康等方面有显著提升。</p>
+                </div>
+            </div>
+            <div class="flex justify-center">
+                <a href="#" class="text-purple-600 hover:text-purple-800 flex items-center">
+                    <span>查看更多研究资料</span>
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Expert Endorsements -->
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">专家背书</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <div class="flex items-center mb-4">
+                        <img src="https://randomuser.me/api/portraits/men/76.jpg" alt="心理学专家" class="w-16 h-16 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-bold text-gray-800">陈博士</h4>
+                            <p class="text-gray-600">北京大学心理学教授</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 italic">"镜子练习是提升自我接纳的有效方法，我在临床治疗中经常推荐这种技术。这款应用通过数字化方式使这项技术更易于日常实践。"</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <div class="flex items-center mb-4">
+                        <img src="https://randomuser.me/api/portraits/women/90.jpg" alt="心理治疗师" class="w-16 h-16 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-bold text-gray-800">李医生</h4>
+                            <p class="text-gray-600">资深心理咨询师，《自我接纳之路》作者</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 italic">"在我20年的咨询生涯中，发现镜子练习对改善自我形象和提升自信有独特效果。这个应用设计科学，引导清晰，是自我成长的绝佳工具。"</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Badges Section -->
+    <section class="py-12 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-wrap justify-center items-center gap-8">
+                <div class="text-center">
+                    <div class="w-20 h-20 mx-auto mb-2">
+                        <i class="fas fa-shield-alt text-5xl text-gray-500"></i>
+                    </div>
+                    <p class="text-sm text-gray-600">数据安全保障</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-20 h-20 mx-auto mb-2">
+                        <i class="fas fa-award text-5xl text-gray-500"></i>
+                    </div>
+                    <p class="text-sm text-gray-600">心理健康应用奖</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-20 h-20 mx-auto mb-2">
+                        <i class="fas fa-thumbs-up text-5xl text-gray-500"></i>
+                    </div>
+                    <p class="text-sm text-gray-600">98%用户满意度</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-20 h-20 mx-auto mb-2">
+                        <i class="fas fa-hand-holding-heart text-5xl text-gray-500"></i>
+                    </div>
+                    <p class="text-sm text-gray-600">10万+用户推荐</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-20 h-20 mx-auto mb-2">
+                        <i class="fas fa-stethoscope text-5xl text-gray-500"></i>
+                    </div>
+                    <p class="text-sm text-gray-600">专业心理顾问团队</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Download Section -->
+    <section id="download" class="py-16 bg-purple-700 text-white app-section">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-3xl font-bold mb-6">立即开始您的自我接纳之旅</h2>
+            <p class="mb-8 max-w-2xl mx-auto">每天只需几分钟，通过镜子练习培养自我关爱和接纳的习惯，开启美好的自我成长之旅。</p>
+            <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                <a href="#" class="bg-black text-white px-8 py-3 rounded-lg flex items-center justify-center hover:bg-gray-900 transition">
+                    <i class="fab fa-apple text-2xl mr-2"></i>
+                    <div class="text-left">
+                        <div class="text-xs">下载</div>
+                        <div class="font-semibold">App Store</div>
+                    </div>
+                </a>
+                <a href="#" class="bg-black text-white px-8 py-3 rounded-lg flex items-center justify-center hover:bg-gray-900 transition">
+                    <i class="fab fa-google-play text-2xl mr-2"></i>
+                    <div class="text-left">
+                        <div class="text-xs">下载</div>
+                        <div class="font-semibold">Google Play</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800">用户体验</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <div class="flex items-center mb-4">
+                        <img src="https://randomuser.me/api/portraits/women/17.jpg" alt="User" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-bold text-gray-800">李欣</h4>
+                            <div class="text-yellow-400">★★★★★</div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">"通过坚持每天的镜子练习，我开始学会接纳自己的不完美。这款App引导我有效地进行练习，记录我的成长历程。"</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <div class="flex items-center mb-4">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-bold text-gray-800">王磊</h4>
+                            <div class="text-yellow-400">★★★★★</div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">"作为一个过度自我批评的人，这款App帮助我建立了更健康的自我对话方式。界面简洁，功能实用，非常推荐！"</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <div class="flex items-center mb-4">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="User" class="w-12 h-12 rounded-full mr-4">
+                        <div>
+                            <h4 class="font-bold text-gray-800">张雨</h4>
+                            <div class="text-yellow-400">★★★★★</div>
+                        </div>
+                    </div>
+                    <p class="text-gray-600">"镜子练习App的引导非常贴心，让我能够轻松开始这种练习。记录功能也很棒，能看到自己的进步真的很鼓舞人心。"</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-10">
+        <div class="container mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-6 md:mb-0">
+                    <h3 class="text-2xl font-bold">镜子练习</h3>
+                    <p class="mt-2 text-gray-400">自我接纳与成长之旅</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-white transition">
+                        <i class="fab fa-facebook-f text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition">
+                        <i class="fab fa-twitter text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition">
+                        <i class="fab fa-instagram text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition">
+                        <i class="fab fa-weixin text-xl"></i>
+                    </a>
+                </div>
+            </div>
+            <hr class="border-gray-700 my-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm"> 2023 镜子练习. 保留所有权利</p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition">隐私政策</a>
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition">使用条款</a>
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition">联系我们</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Language translations for landing page
+        const landingTranslations = {
+            'cn': {
+                'appName': '镜子练习',
+                'navFeatures': '功能特点',
+                'navBenefits': '益处',
+                'navScreenshots': 'App 截图',
+                'navDownload': '下载',
+                'heroTitle': '通过镜子练习，提升自我接纳',
+                'heroSubtitle': '发现自我价值，培养内在力量，与自己建立更深层次的联系',
+                'viewDemo': '查看演示',
+                'featuresTitle': '核心功能',
+                'benefitsTitle': '镜子练习的益处',
+                'scientificTitle': '科学依据',
+                'scientificDesc': '镜子练习基于多项心理学研究和实践，被证明对提升自我接纳和心理健康有显著帮助',
+                'expertTitle': '专家背书',
+                'userExperienceTitle': '用户体验',
+                'downloadTitle': '立即开始您的自我接纳之旅',
+                'downloadDesc': '每天只需几分钟，通过镜子练习培养自我关爱和接纳的习惯，开启美好的自我成长之旅。'
+            },
+            'en': {
+                'appName': 'Mirror Practice',
+                'navFeatures': 'Features',
+                'navBenefits': 'Benefits',
+                'navScreenshots': 'App Screenshots',
+                'navDownload': 'Download',
+                'heroTitle': 'Enhance Self-Acceptance Through Mirror Practice',
+                'heroSubtitle': 'Discover your self-worth, cultivate inner strength, and build a deeper connection with yourself',
+                'viewDemo': 'View Demo',
+                'featuresTitle': 'Core Features',
+                'benefitsTitle': 'Benefits of Mirror Practice',
+                'scientificTitle': 'Scientific Basis',
+                'scientificDesc': 'Mirror practice is based on multiple psychological studies and has been proven to significantly help improve self-acceptance and mental health',
+                'expertTitle': 'Expert Endorsements',
+                'userExperienceTitle': 'User Experience',
+                'downloadTitle': 'Start Your Self-Acceptance Journey Today',
+                'downloadDesc': 'Spend just a few minutes each day with mirror practice to cultivate habits of self-love and acceptance, and embark on a beautiful journey of self-growth.'
+            }
+        };
+        
+        // Function to update landing page language
+        function updateLandingLanguage(lang) {
+            const translations = landingTranslations[lang];
+            document.getElementById('appName').textContent = translations.appName;
+            document.getElementById('navFeatures').textContent = translations.navFeatures;
+            document.getElementById('navBenefits').textContent = translations.navBenefits;
+            document.getElementById('navScreenshots').textContent = translations.navScreenshots;
+            document.getElementById('navDownload').textContent = translations.navDownload;
+            
+            // Update hero section
+            document.querySelector('.header h1').textContent = translations.heroTitle;
+            document.querySelector('.header p').textContent = translations.heroSubtitle;
+            document.querySelector('.header a').textContent = translations.viewDemo;
+            
+            // Update section titles
+            document.querySelector('#features h2').textContent = translations.featuresTitle;
+            document.querySelector('#benefits h2').textContent = translations.benefitsTitle;
+            document.querySelector('.py-16.bg-white h2').textContent = translations.scientificTitle;
+            document.querySelector('.py-16.bg-white p.text-center').textContent = translations.scientificDesc;
+            document.querySelector('.py-16.bg-gray-50 h2').textContent = translations.expertTitle;
+            document.querySelector('.py-16.bg-gray-50:last-of-type h2').textContent = translations.userExperienceTitle;
+            document.querySelector('#download h2').textContent = translations.downloadTitle;
+            document.querySelector('#download p').textContent = translations.downloadDesc;
+        }
+        
+        // Language toggle functionality
+        document.getElementById('langToggle').addEventListener('click', function() {
+            const currentLang = this.textContent === 'EN' ? 'en' : 'cn';
+            this.textContent = currentLang === 'en' ? 'CN' : 'EN';
+            updateLandingLanguage(currentLang === 'en' ? 'en' : 'cn');
+            
+            // Update iframes with language parameter
+            document.querySelectorAll('iframe').forEach(iframe => {
+                const src = iframe.src.split('?')[0];
+                iframe.src = `${src}?lang=${currentLang}`;
+            });
+        });
+        
+        // Initialize with Chinese
+        updateLandingLanguage('cn');
+    </script>
+</body>
 </html>

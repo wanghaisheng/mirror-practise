@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>镜子练习 - 练习</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="language.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f8f9fa;
+            padding-bottom: 80px;
+        }
+        .status-bar {
+            height: 44px;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+            border-bottom: 1px solid #f0f0f0;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .nav-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: #ffffff;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 1px solid #f0f0f0;
+            z-index: 10;
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #8a8a8a;
+            padding: 8px 0;
+            width: 25%;
+        }
+        .nav-item.active {
+            color: #8a2be2;
+        }
+        .mirror-container {
+            background: linear-gradient(to bottom, #9370DB, #6A5ACD);
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .mirror {
+            background: #1a1a1a; /* dark background to simulate a mirror */
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            width: 90%;
+            height: 300px;
+            margin: 20px auto;
+            box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .mirror-icon {
+            font-size: 5rem;
+            color: rgba(255, 255, 255, 0.2);
+        }
+        .practice-step {
+            background: white;
+            border-radius: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        .practice-step.active {
+            box-shadow: 0 4px 12px rgba(138, 43, 226, 0.15);
+            border: 1px solid #8a2be2;
+        }
+        .step-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            cursor: pointer;
+        }
+        .step-content {
+            padding: 0 16px 16px;
+            display: none;
+        }
+        .practice-step.active .step-content {
+            display: block;
+        }
+        .circle-timer {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: conic-gradient(#8a2be2 0%, #8a2be2 100%, #e9ecef 0%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-weight: bold;
+            color: white;
+            font-size: 14px;
+            position: relative;
+        }
+        .circle-timer::after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: white;
+        }
+        .circle-timer span {
+            z-index: 1;
+            color: #8a2be2;
+        }
+        .affirmation-container {
+            background: #f9f4ff;
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+        .affirmation-text {
+            font-size: 18px;
+            font-weight: 500;
+            text-align: center;
+            color: #6a5acd;
+        }
+        .music-player {
+            display: flex;
+            align-items: center;
+            background: #f9f4ff;
+            border-radius: 30px;
+            padding: 8px 16px;
+            margin-top: 16px;
+        }
+        .play-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #8a2be2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-right: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="status-bar">
+        <span data-i18n="practice_title">练习</span>
+    </div>
+
+    <div class="p-4">
+        <!-- Mirror Area -->
+        <div class="mirror-container mb-6">
+            <div class="mirror">
+                <i class="fas fa-user-circle mirror-icon"></i>
+            </div>
+            <div class="px-4 pb-4">
+                <div class="music-player">
+                    <div class="play-btn">
+                        <i class="fas fa-play"></i>
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-medium text-gray-800" data-i18n="meditation_music">舒缓冥想音乐</p>
+                        <p class="text-xs text-gray-500" data-i18n="relax_mood">轻松放松心情</p>
+                    </div>
+                    <i class="fas fa-volume-up text-purple-600"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Practice Steps -->
+        <h3 class="text-lg font-bold text-gray-800 mb-4" data-i18n="practice_steps">练习步骤</h3>
+        
+        <!-- Step 1 -->
+        <div class="practice-step active" id="step1">
+            <div class="step-header" onclick="toggleStep('step1')">
+                <div class="flex items-center">
+                    <div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center mr-3">
+                        <span class="text-purple-600 font-bold">1</span>
+                    </div>
+                    <span class="font-bold text-gray-800" data-i18n="practice_preparation">准备</span>
+                </div>
+                <i class="fas fa-chevron-down text-gray-400"></i>
+            </div>
+            <div class="step-content">
+                <p class="text-gray-600 mb-3" data-i18n="practice_preparation_desc">在开始练习前，请先做好以下准备：</p>
+                <ul class="text-gray-600 space-y-2 list-disc list-inside mb-4">
+                    <li data-i18n="practice_preparation_item1">找一个安静、私密的环境</li>
+                    <li data-i18n="practice_preparation_item2">确保光线充足，让你能清晰看到自己</li>
+                    <li data-i18n="practice_preparation_item3">调整仪容，尽量以舒适自然的状态面对镜子</li>
+                    <li data-i18n="practice_preparation_item4">深呼吸几次，让身心放松</li>
+                </ul>
+                <button class="w-full py-3 bg-purple-600 text-white rounded-lg font-medium" data-i18n="practice_complete_prep">
+                    完成准备
+                </button>
+            </div>
+        </div>
+        
+        <!-- Step 2 -->
+        <div class="practice-step" id="step2">
+            <div class="step-header" onclick="toggleStep('step2')">
+                <div class="flex items-center">
+                    <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center mr-3">
+                        <span class="text-gray-600 font-bold">2</span>
+                    </div>
+                    <span class="font-bold text-gray-800" data-i18n="practice_gaze">直视练习</span>
+                </div>
+                <i class="fas fa-chevron-right text-gray-400"></i>
+            </div>
+            <div class="step-content">
+                <p class="text-gray-600 mb-4" data-i18n="practice_gaze_desc">直视镜中的自己，尤其是眼睛。保持专注，不要回避。</p>
+                
+                <div class="circle-timer">
+                    <span>30</span>
+                </div>
+                
+                <div class="flex justify-between space-x-3 mb-4">
+                    <button class="flex-1 py-2 bg-gray-200 text-gray-700 rounded-lg font-medium" data-i18n="practice_gaze_10s">
+                        10秒
+                    </button>
+                    <button class="flex-1 py-2 bg-purple-600 text-white rounded-lg font-medium" data-i18n="practice_gaze_30s">
+                        30秒
+                    </button>
+                    <button class="flex-1 py-2 bg-gray-200 text-gray-700 rounded-lg font-medium" data-i18n="practice_gaze_60s">
+                        60秒
+                    </button>
+                </div>
+                
+                <button class="w-full py-3 bg-purple-600 text-white rounded-lg font-medium" data-i18n="practice_start_timer">
+                    开始计时
+                </button>
+            </div>
+        </div>
+        
+        <!-- Step 3 -->
+        <div class="practice-step" id="step3">
+            <div class="step-header" onclick="toggleStep('step3')">
+                <div class="flex items-center">
+                    <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center mr-3">
+                        <span class="text-gray-600 font-bold">3</span>
+                    </div>
+                    <span class="font-bold text-gray-800" data-i18n="practice_feeling">感受承认</span>
+                </div>
+                <i class="fas fa-chevron-right text-gray-400"></i>
+            </div>
+            <div class="step-content">
+                <p class="text-gray-600 mb-4" data-i18n="practice_feeling_desc">观察内心感受，不必评判，只需承认并接受这些感受。</p>
+                
+                <div class="bg-gray-50 rounded-lg p-4 mb-4">
+                    <p class="text-gray-600 italic mb-2" data-i18n="practice_feeling_notice">"我注意到我现在感到..."</p>
+                    <div class="flex flex-wrap gap-2 mb-3">
+                        <span class="px-4 py-2 rounded-full bg-blue-100 text-blue-600 text-sm" data-i18n="feeling_tense">紧张</span>
+                        <span class="px-4 py-2 rounded-full bg-green-100 text-green-600 text-sm" data-i18n="feeling_curious">好奇</span>
+                        <span class="px-4 py-2 rounded-full bg-yellow-100 text-yellow-600 text-sm" data-i18n="feeling_expectant">期待</span>
+                        <span class="px-4 py-2 rounded-full bg-red-100 text-red-600 text-sm" data-i18n="feeling_anxious">不安</span>
+                        <span class="px-4 py-2 rounded-full bg-purple-100 text-purple-600 text-sm" data-i18n="feeling_calm">平静</span>
+                        <span class="px-4 py-2 rounded-full bg-gray-100 text-gray-600 text-sm" data-i18n="add_feeling">+添加</span>
+                    </div>
+                    <textarea class="w-full p-3 border border-gray-300 rounded-lg" rows="2" placeholder="记录你的感受..." data-i18n="record_feeling"></textarea>
+                </div>
+                
+                <button class="w-full py-3 bg-purple-600 text-white rounded-lg font-medium" data-i18n="practice_continue">
+                    继续
+                </button>
+            </div>
+        </div>
+        
+        <!-- Step 4 -->
+        <div class="practice-step" id="step4">
+            <div class="step-header" onclick="toggleStep('step4')">
+                <div class="flex items-center">
+                    <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center mr-3">
+                        <span class="text-gray-600 font-bold">4</span>
+                    </div>
+                    <span class="font-bold text-gray-800" data-i18n="practice_affirmation">自我对话</span>
+                </div>
+                <i class="fas fa-chevron-right text-gray-400"></i>
+            </div>
+            <div class="step-content">
+                <p class="text-gray-600 mb-4" data-i18n="practice_affirmation_desc">对着镜中的自己，重复以下肯定语句。你也可以自定义语句或添加你的名字。</p>
+                
+                <div class="affirmation-container mb-4">
+                    <p class="affirmation-text" data-i18n="affirmation_text">"我爱你，我喜欢你，我无条件地接纳你，支持你"</p>
+                </div>
+                
+                <div class="flex items-center justify-between mb-4">
+                    <span class="text-gray-600" data-i18n="repeat_times">重复次数</span>
+                    <div class="flex items-center">
+                        <button class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
+                            <i class="fas fa-minus text-gray-600"></i>
+                        </button>
+                        <span class="mx-4 font-bold text-purple-600">5</span>
+                        <button class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center">
+                            <i class="fas fa-plus text-gray-600"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <button class="w-full py-3 bg-purple-600 text-white rounded-lg font-medium mb-3" data-i18n="customize_affirmation">
+                    自定义肯定语句
+                </button>
+                <button class="w-full py-3 bg-green-600 text-white rounded-lg font-medium" data-i18n="complete_practice">
+                    完成练习
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="nav-bar">
+        <div class="nav-item">
+            <i class="fas fa-home text-xl"></i>
+            <span class="text-xs mt-1" data-i18n="nav_home">首页</span>
+        </div>
+        <div class="nav-item active">
+            <i class="fas fa-compass text-xl"></i>
+            <span class="text-xs mt-1" data-i18n="nav_practice">练习</span>
+        </div>
+        <div class="nav-item">
+            <i class="fas fa-history text-xl"></i>
+            <span class="text-xs mt-1" data-i18n="nav_history">历史</span>
+        </div>
+        <div class="nav-item">
+            <i class="fas fa-user text-xl"></i>
+            <span class="text-xs mt-1" data-i18n="nav_profile">我的</span>
+        </div>
+    </div>
+
+    <script>
+        function toggleStep(stepId) {
+            const allSteps = document.querySelectorAll('.practice-step');
+            allSteps.forEach(step => {
+                if (step.id === stepId) {
+                    step.classList.toggle('active');
+                } else {
+                    step.classList.remove('active');
+                }
+            });
+        }
+    </script>
+</body>
+</html>

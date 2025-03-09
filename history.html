@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>镜子练习 - 历史记录</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="language.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f8f9fa;
+            padding-bottom: 80px;
+        }
+        .status-bar {
+            height: 44px;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+            border-bottom: 1px solid #f0f0f0;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .nav-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: #ffffff;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 1px solid #f0f0f0;
+            z-index: 10;
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #8a8a8a;
+            padding: 8px 0;
+            width: 25%;
+        }
+        .nav-item.active {
+            color: #8a2be2;
+        }
+        .history-item {
+            background: white;
+            border-radius: 16px;
+            margin-bottom: 16px;
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+        .history-item:active {
+            transform: scale(0.98);
+        }
+        .mood-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+        .tab {
+            padding: 12px 0;
+            text-align: center;
+            font-weight: 500;
+            color: #8a8a8a;
+            border-bottom: 2px solid transparent;
+        }
+        .tab.active {
+            color: #8a2be2;
+            border-bottom: 2px solid #8a2be2;
+        }
+        .calendar-day {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin: 4px;
+            font-size: 14px;
+        }
+        .calendar-day.practice {
+            background-color: #8a2be2;
+            color: white;
+        }
+        .calendar-day.today {
+            border: 2px solid #8a2be2;
+            color: #8a2be2;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="status-bar">
+        <span data-i18n="history_title">历史记录</span>
+    </div>
+
+    <div class="p-4">
+        <!-- Tabs -->
+        <div class="flex mb-4 border-b border-gray-200">
+            <div class="tab active flex-1" data-i18n="history_practice_records">
+                练习记录
+            </div>
+            <div class="tab flex-1" data-i18n="history_data_analysis">
+                数据分析
+            </div>
+        </div>
+
+        <!-- Stats Overview -->
+        <div class="bg-white rounded-xl p-4 mb-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold text-gray-800" data-i18n="history_statistics">练习统计</h3>
+                <div class="text-sm text-purple-600" data-i18n="history_view_more">查看更多</div>
+            </div>
+            <div class="flex justify-between text-center">
+                <div>
+                    <p class="text-2xl font-bold text-purple-600" data-i18n="history_total_practices">32</p>
+                    <p class="text-xs text-gray-500" data-i18n="history_total_practices_label">总练习次数</p>
+                </div>
+                <div>
+                    <p class="text-2xl font-bold text-purple-600" data-i18n="history_weekly_practices">5</p>
+                    <p class="text-xs text-gray-500" data-i18n="history_weekly_practices_label">本周练习</p>
+                </div>
+                <div>
+                    <p class="text-2xl font-bold text-purple-600" data-i18n="history_longest_streak">12</p>
+                    <p class="text-xs text-gray-500" data-i18n="history_longest_streak_label">最长连续天数</p>
+                </div>
+                <div>
+                    <p class="text-2xl font-bold text-purple-600" data-i18n="history_average_duration">8.5</p>
+                    <p class="text-xs text-gray-500" data-i18n="history_average_duration_label">平均时长(分钟)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Monthly Calendar -->
+        <div class="bg-white rounded-xl p-4 mb-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold text-gray-800" data-i18n="history_monthly_calendar">2023年11月</h3>
+                <div class="flex space-x-2">
+                    <button class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">
+                        <i class="fas fa-chevron-left text-gray-600"></i>
+                    </button>
+                    <button class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center">
+                        <i class="fas fa-chevron-right text-gray-600"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="flex justify-between text-center text-xs text-gray-500 mb-2">
+                <span data-i18n="history_monday">一</span>
+                <span data-i18n="history_tuesday">二</span>
+                <span data-i18n="history_wednesday">三</span>
+                <span data-i18n="history_thursday">四</span>
+                <span data-i18n="history_friday">五</span>
+                <span data-i18n="history_saturday">六</span>
+                <span data-i18n="history_sunday">日</span>
+            </div>
+            <div class="flex flex-wrap">
+                <div class="calendar-day text-gray-300">30</div>
+                <div class="calendar-day text-gray-300">31</div>
+                <div class="calendar-day">1</div>
+                <div class="calendar-day">2</div>
+                <div class="calendar-day practice">3</div>
+                <div class="calendar-day practice">4</div>
+                <div class="calendar-day">5</div>
+                <div class="calendar-day practice">6</div>
+                <div class="calendar-day">7</div>
+                <div class="calendar-day practice">8</div>
+                <div class="calendar-day">9</div>
+                <div class="calendar-day practice">10</div>
+                <div class="calendar-day practice">11</div>
+                <div class="calendar-day">12</div>
+                <div class="calendar-day practice">13</div>
+                <div class="calendar-day practice">14</div>
+                <div class="calendar-day practice">15</div>
+                <div class="calendar-day">16</div>
+                <div class="calendar-day practice">17</div>
+                <div class="calendar-day practice">18</div>
+                <div class="calendar-day">19</div>
+                <div class="calendar-day practice">20</div>
+                <div class="calendar-day">21</div>
+                <div class="calendar-day practice">22</div>
+                <div class="calendar-day today">23</div>
+                <div class="calendar-day">24</div>
+                <div class="calendar-day">25</div>
+                <div class="calendar-day">26</div>
+                <div class="calendar-day">27</div>
+                <div class="calendar-day">28</div>
+                <div class="calendar-day">29</div>
+                <div class="calendar-day">30</div>
+            </div>
+        </div>
+
+        <!-- Weekly Chart -->
+        <div class="bg-white rounded-xl p-4 mb-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold text-gray-800" data-i18n="history_weekly_chart">每周练习时长（分钟）</h3>
+                <div class="text-sm text-purple-600" data-i18n="history_this_month">本月</div>
+            </div>
+            <canvas id="weeklyChart" height="150"></canvas>
+        </div>
+
+        <!-- Recent History -->
+        <h3 class="font-bold text-gray-800 mb-4" data-i18n="history_recent_practices">最近练习记录</h3>
+        
+        <!-- History Item 1 -->
+        <div class="history-item">
+            <div class="px-4 pt-4 pb-2">
+                <div class="flex justify-between items-center mb-2">
+                    <div class="font-bold text-gray-800" data-i18n="history_today_practice">今天的练习</div>
+                    <div class="text-sm text-gray-500" data-i18n="history_today_time">今天 09:30</div>
+                </div>
+                <div class="flex items-center mb-3">
+                    <div class="mood-indicator bg-green-500"></div>
+                    <span class="text-sm text-gray-600" data-i18n="history_good_mood">感觉良好</span>
+                </div>
+                <p class="text-gray-600 text-sm mb-3" data-i18n="history_today_description">
+                    今天的练习感觉很顺利，我能够直视镜中的自己，并感受到了一种平静。自我对话时感到一股暖流，似乎开始接纳自己的某些部分。
+                </p>
+                <div class="flex justify-between text-xs text-gray-500 pt-2 border-t border-gray-100">
+                    <span data-i18n="history_duration">持续时间: 12分钟</span>
+                    <span data-i18n="history_steps_completed">完成步骤: 4/4</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- History Item 2 -->
+        <div class="history-item">
+            <div class="px-4 pt-4 pb-2">
+                <div class="flex justify-between items-center mb-2">
+                    <div class="font-bold text-gray-800" data-i18n="history_morning_practice">晨间练习</div>
+                    <div class="text-sm text-gray-500" data-i18n="history_yesterday_time">昨天 07:15</div>
+                </div>
+                <div class="flex items-center mb-3">
+                    <div class="mood-indicator bg-yellow-500"></div>
+                    <span class="text-sm text-gray-600" data-i18n="history_some_challenges">有些挑战</span>
+                </div>
+                <p class="text-gray-600 text-sm mb-3" data-i18n="history_yesterday_description">
+                    今天起床后立即进行了练习，感觉有些困难。直视自己时有点不舒服，但坚持完成了全程。注意到自己的抵抗情绪，会继续尝试。
+                </p>
+                <div class="flex justify-between text-xs text-gray-500 pt-2 border-t border-gray-100">
+                    <span data-i18n="history_duration">持续时间: 8分钟</span>
+                    <span data-i18n="history_steps_completed">完成步骤: 4/4</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- History Item 3 -->
+        <div class="history-item">
+            <div class="px-4 pt-4 pb-2">
+                <div class="flex justify-between items-center mb-2">
+                    <div class="font-bold text-gray-800" data-i18n="history_night_practice">夜间放松练习</div>
+                    <div class="text-sm text-gray-500" data-i18n="history_night_time">11月20日 22:05</div>
+                </div>
+                <div class="flex items-center mb-3">
+                    <div class="mood-indicator bg-purple-500"></div>
+                    <span class="text-sm text-gray-600" data-i18n="history_deep_connection">深度连接</span>
+                </div>
+                <p class="text-gray-600 text-sm mb-3" data-i18n="history_night_description">
+                    睡前的练习特别有效，背景音乐帮助我进入放松状态。感觉与镜中的自己建立了更深层次的连接，自我对话环节尤其有力量。
+                </p>
+                <div class="flex justify-between text-xs text-gray-500 pt-2 border-t border-gray-100">
+                    <span data-i18n="history_duration">持续时间: 15分钟</span>
+                    <span data-i18n="history_steps_completed">完成步骤: 4/4</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="nav-bar">
+        <div class="nav-item">
+            <i class="fas fa-home text-xl"></i>
+            <span class="text-xs mt-1" data-i18n="history_home">首页</span>
+        </div>
+        <div class="nav-item">
+            <i class="fas fa-compass text-xl"></i>
+            <span class="text-xs mt-1" data-i18n="history_practice">练习</span>
+        </div>
+        <div class="nav-item active">
+            <i class="fas fa-history text-xl"></i>
+            <span class="text-xs mt-1" data-i18n="history_history">历史</span>
+        </div>
+        <div class="nav-item">
+            <i class="fas fa-user text-xl"></i>
+            <span class="text-xs mt-1" data-i18n="history_my">我的</span>
+        </div>
+    </div>
+
+    <script>
+        let weeklyChart;
+        
+        function initChart() {
+            const ctx = document.getElementById('weeklyChart').getContext('2d');
+            
+            // Get current language
+            const urlParams = new URLSearchParams(window.location.search);
+            const lang = urlParams.get('lang') || 'cn';
+            
+            // Prepare labels based on language
+            const labels = lang === 'en' 
+                ? ['Week 1', 'Week 2', 'Week 3', 'Week 4'] 
+                : ['第1周', '第2周', '第3周', '第4周'];
+                
+            const chartLabel = lang === 'en'
+                ? 'Practice Duration (min)'
+                : '练习时长（分钟）';
+                
+            // Destroy existing chart if it exists
+            if (weeklyChart) {
+                weeklyChart.destroy();
+            }
+            
+            weeklyChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: chartLabel,
+                        data: [45, 62, 38, 52],
+                        backgroundColor: [
+                            'rgba(138, 43, 226, 0.6)',
+                            'rgba(138, 43, 226, 0.6)',
+                            'rgba(138, 43, 226, 0.6)',
+                            'rgba(138, 43, 226, 0.6)'
+                        ],
+                        borderColor: [
+                            'rgba(138, 43, 226, 1)',
+                            'rgba(138, 43, 226, 1)',
+                            'rgba(138, 43, 226, 1)',
+                            'rgba(138, 43, 226, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Initialize chart when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initChart();
+            
+            // Also update chart if language changes
+            window.addEventListener('languageChanged', function(e) {
+                initChart();
+            });
+        });
+    </script>
+</body>
+</html>

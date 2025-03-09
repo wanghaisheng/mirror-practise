@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>镜子练习 - 首页</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="pageData.js"></script>
+    <script src="language.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f8f9fa;
+            padding-bottom: 80px;
+        }
+        .status-bar {
+            height: 44px;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+            border-bottom: 1px solid #f0f0f0;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .nav-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: #ffffff;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 1px solid #f0f0f0;
+            z-index: 10;
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #8a8a8a;
+            padding: 8px 0;
+            width: 25%;
+        }
+        .nav-item.active {
+            color: #8a2be2;
+        }
+        .feature-card {
+            transition: transform 0.2s;
+        }
+        .feature-card:active {
+            transform: scale(0.98);
+        }
+        .quote-bubble {
+            position: relative;
+            background: #f3e8ff;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+        .quote-bubble:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 24px;
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-top: 10px solid #f3e8ff;
+        }
+        .practice-btn {
+            background: linear-gradient(135deg, #8a2be2, #6a5acd);
+            box-shadow: 0 4px 10px rgba(138, 43, 226, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="status-bar">
+        <span>镜子练习</span>
+    </div>
+
+    <div class="p-4">
+        <!-- Welcome Section -->
+        <div class="mb-6">
+            <div class="flex justify-between items-center mb-4">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-800" data-content="greeting">你好，用户</h2>
+                    <p class="text-gray-600" data-content="subtitle">今天是开始自我接纳的好日子</p>
+                </div>
+                <div class="w-12 h-12 rounded-full overflow-hidden bg-purple-100 flex items-center justify-center">
+                    <i class="fas fa-user text-purple-500 text-xl"></i>
+                </div>
+            </div>
+            
+            <div class="quote-bubble">
+                <p class="text-gray-700 italic" data-content="quote">"真正的自信来自接纳真实的自己，包括缺点和不足。"</p>
+                <p class="text-right text-gray-500 text-sm mt-2" data-content="author">— 布伦妮·布朗</p>
+            </div>
+        </div>
+
+        <!-- Practice Button -->
+        <div class="mb-8">
+            <button class="practice-btn w-full py-4 text-white rounded-xl font-bold text-lg flex items-center justify-center">
+                <i class="fas fa-play-circle mr-2"></i> <span data-content="start-practice">开始今日练习</span>
+            </button>
+        </div>
+
+        <!-- Progress Stats -->
+        <div class="bg-white rounded-xl shadow-sm p-4 mb-6">
+            <h3 class="text-lg font-bold text-gray-800 mb-3" data-content="weekly-progress">本周进度</h3>
+            <div class="flex justify-between mb-3">
+                <div class="text-center">
+                    <p class="text-2xl font-bold text-purple-600">5</p>
+                    <p class="text-xs text-gray-500" data-content="completed">已完成</p>
+                </div>
+                <div class="text-center">
+                    <p class="text-2xl font-bold text-purple-600">2</p>
+                    <p class="text-xs text-gray-500" data-content="consecutive-days">连续天数</p>
+                </div>
+                <div class="text-center">
+                    <p class="text-2xl font-bold text-purple-600">71%</p>
+                    <p class="text-xs text-gray-500" data-content="completion-rate">完成率</p>
+                </div>
+            </div>
+            <div class="flex space-x-1 mt-3">
+                <div class="w-1/7 h-2 rounded-full bg-purple-600"></div>
+                <div class="w-1/7 h-2 rounded-full bg-purple-600"></div>
+                <div class="w-1/7 h-2 rounded-full bg-purple-600"></div>
+                <div class="w-1/7 h-2 rounded-full bg-purple-600"></div>
+                <div class="w-1/7 h-2 rounded-full bg-purple-600"></div>
+                <div class="w-1/7 h-2 rounded-full bg-gray-200"></div>
+                <div class="w-1/7 h-2 rounded-full bg-gray-200"></div>
+            </div>
+            <div class="flex justify-between text-xs text-gray-500 mt-1">
+                <span>一</span>
+                <span>二</span>
+                <span>三</span>
+                <span>四</span>
+                <span>五</span>
+                <span>六</span>
+                <span>日</span>
+            </div>
+        </div>
+
+        <!-- Feature Cards -->
+        <h3 class="text-lg font-bold text-gray-800 mb-3" data-content="explore-more">探索更多</h3>
+        <div class="grid grid-cols-2 gap-4 feature-cards">
+            <!-- These cards will be populated dynamically based on the JSON data -->
+        </div>
+    </div>
+
+    <div class="nav-bar">
+        <div class="nav-item active">
+            <i class="fas fa-home text-xl"></i>
+            <span class="text-xs mt-1">首页</span>
+        </div>
+        <div class="nav-item">
+            <i class="fas fa-compass text-xl"></i>
+            <span class="text-xs mt-1">练习</span>
+        </div>
+        <div class="nav-item">
+            <i class="fas fa-history text-xl"></i>
+            <span class="text-xs mt-1">历史</span>
+        </div>
+        <div class="nav-item">
+            <i class="fas fa-user text-xl"></i>
+            <span class="text-xs mt-1">我的</span>
+        </div>
+    </div>
+    
+    <script>
+        // Script to dynamically generate feature cards
+        function renderFeatureCards() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const lang = urlParams.get('lang') || 'cn';
+            const cardsData = pageData.home[lang].featureCards;
+            const cardsContainer = document.querySelector('.feature-cards');
+            
+            // Clear existing cards
+            cardsContainer.innerHTML = '';
+            
+            // Generate new cards
+            cardsData.forEach(card => {
+                const cardElement = document.createElement('div');
+                cardElement.className = 'feature-card bg-white p-4 rounded-xl shadow-sm';
+                cardElement.innerHTML = `
+                    <div class="w-10 h-10 rounded-full bg-${card.color}-100 flex items-center justify-center mb-3">
+                        <i class="fas fa-${card.icon} text-${card.color}-500"></i>
+                    </div>
+                    <h4 class="font-bold text-gray-800 mb-1">${card.title}</h4>
+                    <p class="text-gray-600 text-sm">${card.description}</p>
+                `;
+                cardsContainer.appendChild(cardElement);
+            });
+        }
+        
+        // Call the render function on page load and language change
+        document.addEventListener('DOMContentLoaded', renderFeatureCards);
+        window.addEventListener('languageChanged', renderFeatureCards);
+    </script>
+</body>
+</html>
